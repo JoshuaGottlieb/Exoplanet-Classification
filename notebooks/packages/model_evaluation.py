@@ -93,12 +93,12 @@ def evaluate_model(X_test, y_test, model):
     # Hardcoded to work with Pipeline framework: (preprocessing, resampler, classifier)
     # Where preprocessing = (StandardScaler(), OneHotEncoder())
     if type(model) == GridSearchCV:
-        feature_names = model.best_estimator_.steps[0][1].transformers_[-1][1].get_feature_names()
-        one_hot_col = model.best_estimator_.steps[0][1].transformers_[-1][-1]
+#         feature_names = model.best_estimator_.steps[0][1].transformers_[-1][1].get_feature_names()
+#         one_hot_col = model.best_estimator_.steps[0][1].transformers_[-1][-1]
         feature_importances = model.best_estimator_.steps[-1][-1].feature_importances_
     else:
-        feature_names = model.steps[0][1].transformers_[-1][1].categories_[0]
-        one_hot_col = model.steps[0][1].transformers_[-1][-1]
+#         feature_names = model.steps[0][1].transformers_[-1][1].categories_[0]
+#         one_hot_col = model.steps[0][1].transformers_[-1][-1]
         # Hardcoded since LogisticRegression uses .coef_, most other SKLearn models use .feature_importances_
         if type(model.steps[-1][-1]) == LogisticRegression:
             feature_importances = model.steps[-1][-1].coef_[0]
@@ -140,13 +140,14 @@ def evaluate_model(X_test, y_test, model):
     classification_frame['auc'] = [auc] + [None] * (num_classes - 1)
     
     # Clean feature strings for OneHotEncoded features
-    for index, string in enumerate(feature_names):
-        for i in range(len(one_hot_col)):
-            feature_names[index] = re.sub(r'x{}'.format(i), one_hot_col[i], feature_names[index])
+#     for index, string in enumerate(feature_names):
+#         for i in range(len(one_hot_col)):
+#             feature_names[index] = re.sub(r'x{}'.format(i), one_hot_col[i], feature_names[index])
     
     # Get all feature names from X_test columns, with categorical columns replaced with OneHotEncoded equivalents
     # Hardcoded for all categorical columns to appear before non-categorical columns
-    feature_names = feature_names.tolist() + [x for x in X_test if x not in one_hot_col]
+#     feature_names = feature_names.tolist() + [x for x in X_test if x not in one_hot_col]
+    feature_names = X_test.columns.values.tolist()
     
     # Collect feature importances and names into Pandas DataFrame
     feature_pairs = list(zip(feature_names, feature_importances))
