@@ -1,4 +1,4 @@
-# Exoplanet-Classification
+# Exoplanet Classification
 
 **Author**: Joshua Gottlieb
 
@@ -11,8 +11,7 @@ The method used to gather the data is called the *transit method*. Below is an i
 | Transit Method of Detecting Exoplanets |
 | :------------------------------------: |
 | ![](./images/transit_method.png)       |
-| [Exoplanet WASP-96 b (NIRISS Transit Light Curve)](https://webbtelescope.org/contents/media/images/2022/032/01G72W1XZK6A79RJK2Z93D58CD?news=true
-) |
+| [Exoplanet WASP-96 b (NIRISS Transit Light Curve)](https://webbtelescope.org/contents/media/images/2022/032/01G72W1XZK6A79RJK2Z93D58CD?news=true) |
 
 When a planet passes in front of a star, it reduces the observed light of the star. Based on the amount of reduction in light, as well as many other derived calculations, it is possible to determine whether the object passing in front of the star is a true exoplanet.
 
@@ -51,6 +50,7 @@ There were not many features that needed to be engineered for this data analysis
 As predicted by our Feature Analysis, even a completely untuned logistic model produces a highly accurate model. The final XGBoost model used all default parameters except for having 500 estimators (default 100) and a max tree depth of 12 (default 6).  The XGBoost model significantly improves upon the logistic model, giving an astounding accuracy of 98.2%. There were no issues of class imbalance, as there were 1942 confirmed planets and 2350 false positives in the training dataset. Both of these models were trained with a scoring method of accuracy - technically speaking we are most interested in class 0 (confirmed exoplanet) recall, as we do not want to miss any potential exoplanets, since the purpose of the Kepler missions is to find exoplanets. Another XGBoost model grid search was performed with an emphasis on class 0 recall, but it did not perform any better than the one scored on accuracy. For more information about which grid search parameters were used, see the [Modeling Notebook](./notebooks/Modeling.ipynb).
 
 | Best Binary Classifier Feature Importances by Absolute Magnitude of Coefficient |
+| :-----------------------------------------------------------------------------: |
 | ![](./images/best_binary_feature_importances.png)                               |
 
 As expected, Maximum Multiple Event Statistic, Planet-Star Radius Ratio, and Sky Angular Offset rank in the top 10 features for our binary classifiers.
@@ -65,6 +65,7 @@ Unlike the binary classification subset, the multi-class classification subset i
 Nevertheless, the baseline decision tree model boasts an accuracy of 85.7%, and the final multi-class XGBoost model improves this accuracy up to 92.6%, which are excellent levels by most data analysis standards. Specifically, there is a large increase in precision and recall for class 1 and 3 between the baseline and final multi-class models. There is an increase in precision for class 4, but the recall did not improve between the baseline and multi-class models. This is almost certainly due to the extreme class imbalance for class 4 and likely cannot be fixed without adversely affecting the other class predictions unless more data points are gathered. The final model has an excellent class 0 recall of 97.5%, and it achieved this result without losing precision, which is a good sign that the data is highly separable and that the model is capturing the true relationships between the features and the target.
 
 | Best Multi-Class Classifier Feature Importances by Absolute Magnitude of Coefficient |
+| :----------------------------------------------------------------------------------: |
 | ![](./images/best_multi_feature_importances.png)                                     |
 
 As expected, all six of the variables inspected earlier during EDA showed up in the most important features of the multi-class classifier. Interestingly, the number of objects identified around the star is the most powerful predictor in this model. This makes intuitive sense, as one would expect that if a star system contains one exoplanet, it is likely to contain more, so the identification of multiple distinct Kepler objects is a strong predictor of whether each object is a planet.
@@ -86,7 +87,7 @@ Next steps include:
 
 ## For More Information
 
-Please look at my full analysis in [Jupyter Notebooks](./notebooks) or in my [presentation](./presentation/King_County_Linear_Regression_Presentation.pdf).
+Please look at my full analysis in [Jupyter Notebooks](./notebooks) or in my [presentation](./presentation/Identifying_Exoplanets_Using_Machine_Learning.pdf).
 
 For any additional questions, please contact: **Joshua Gottlieb (joshuadavidgottlieb@gmail.com)**
 
@@ -156,5 +157,4 @@ For any additional questions, please contact: **Joshua Gottlieb (joshuadavidgott
 │   └── transit_method.png
 ├── presentation                               <- Folder containing PDF of presentation
 │   └── Identifying_Exoplanets_Using_Machine_Learning.pdf
-└── README.md
 ```
